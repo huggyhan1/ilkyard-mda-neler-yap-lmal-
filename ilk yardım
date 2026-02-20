@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İlk Yardım ve Sakatlanmalar</title>
+
+<style>
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f4f4f4;
+    text-align:center;
+}
+header{
+    background:#c0392b;
+    color:white;
+    padding:20px;
+}
+#content{
+    background:white;
+    margin:20px auto;
+    width:85%;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+button{
+    padding:10px 20px;
+    margin:10px;
+    border:none;
+    background:#e74c3c;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+button:hover{
+    background:#922b21;
+}
+.quiz-option{
+    display:block;
+    margin:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🚑 İlk Yardım ve Sakatlanmalara Müdahale</h1>
+</header>
+
+<div id="content"></div>
+
+<button onclick="prevPage()">⬅ Geri</button>
+<button onclick="nextPage()">İleri ➡</button>
+
+<script>
+
+let page = 0;
+
+const pages = [
+"1️⃣ İlk Yardım Nedir?<br><br>Hayat kurtarmak amacıyla olay yerinde yapılan bilinçli müdahaledir.",
+"2️⃣ İlk Yardımın Amaçları<br><br>Hayati tehlikeyi azaltmak ve iyileşmeyi kolaylaştırmak.",
+"3️⃣ Temel Yaşam Desteği<br><br>Bilinç kontrolü, solunum kontrolü, kalp masajı.",
+"4️⃣ Kanamalarda İlk Yardım<br><br>Baskı uygula ve 112'yi ara.",
+"5️⃣ Burkulma<br><br>Dinlendir, buz uygula, sar.",
+"6️⃣ Kırık<br><br>Hareket ettirme ve sabitle.",
+"7️⃣ Çıkık<br><br>Yerine oturtmaya çalışma.",
+"8️⃣ Yanık<br><br>Soğuk su tut, krem sürme.",
+"9️⃣ Elektrik Çarpması<br><br>Elektriği kesmeden dokunma.",
+"🔟 Zehirlenme<br><br>114 Zehir Danışma hattını ara.",
+"11️⃣ Bayılma<br><br>Ayakları kaldır.",
+"12️⃣ Boğulma<br><br>Heimlich manevrası uygula.",
+"13️⃣ Epilepsi Krizi<br><br>Ağzına bir şey koyma.",
+"14️⃣ Sıcak Çarpması<br><br>Serin yere al.",
+"15️⃣ Donma<br><br>Ani ısıtma yapma.",
+"16️⃣ Böcek Sokması<br><br>Buz uygula.",
+"17️⃣ Yılan Isırması<br><br>112'yi ara.",
+"18️⃣ Trafik Kazası<br><br>Yaralıyı oynatma.",
+"19️⃣ İlk Yardım Çantası<br><br>Bandaj, eldiven, antiseptik bulundur.",
+"20️⃣ Genel Özet<br><br>Soğukkanlı ol ve profesyonel yardım çağır."
+];
+
+function showPage(){
+    document.getElementById("content").innerHTML = pages[page];
+}
+
+function nextPage(){
+    if(page < pages.length -1){
+        page++;
+        showPage();
+    }else{
+        showQuiz();
+    }
+}
+
+function prevPage(){
+    if(page > 0){
+        page--;
+        showPage();
+    }
+}
+
+showPage();
+
+
+// QUIZ
+
+function showQuiz(){
+document.getElementById("content").innerHTML = `
+<h2>🧠 10 Soruluk Quiz</h2>
+
+${createQuestion(1,"Kanamada ilk yapılacak işlem nedir?",
+["Beklemek","Baskı uygulamak","Yürümek","Su dökmek"],1)}
+
+${createQuestion(2,"Yanıkta ne yapılmaz?",
+["Soğuk su tutmak","Diş macunu sürmek","Hastaneye gitmek","Temiz bez koymak"],1)}
+
+${createQuestion(3,"Kırıkta ne yapılır?",
+["Sabitlemek","Koşturmak","Masaj yapmak","Bastırmak"],0)}
+
+${createQuestion(4,"Elektrik çarpmasında ilk adım nedir?",
+["Dokunmak","Elektriği kesmek","Su dökmek","Koşmak"],1)}
+
+${createQuestion(5,"Bayılan kişiye ne yapılır?",
+["Oturtturmak","Ayaklarını kaldırmak","Koşturmak","Yemek vermek"],1)}
+
+${createQuestion(6,"Boğulmada hangi yöntem kullanılır?",
+["Heimlich","Masaj","Koşu","Bandaj"],0)}
+
+${createQuestion(7,"Zehirlenmede hangi hat aranır?",
+["110","112","114","155"],2)}
+
+${createQuestion(8,"Epilepsi krizinde ne yapılmaz?",
+["Ağzına bir şey koymak","Koruma sağlamak","Yan yatırmak","Beklemek"],0)}
+
+${createQuestion(9,"Burkulmada ne uygulanır?",
+["Sıcak","Buz","Yağ","Toprak"],1)}
+
+${createQuestion(10,"İlk yardım çantasında ne bulunur?",
+["Oyuncak","Bandaj","Kalem","Şeker"],1)}
+
+<br>
+<button onclick="calculateScore()">Sonucu Hesapla</button>
+`;
+}
+
+function createQuestion(num, question, options, correctIndex){
+    let html = `<p>${num}) ${question}</p>`;
+    options.forEach((opt,i)=>{
+        html += `<label class="quiz-option">
+        <input type="radio" name="q${num}" value="${i === correctIndex ? 1 : 0}">
+        ${opt}
+        </label>`;
+    });
+    return html;
+}
+
+function calculateScore(){
+    let score = 0;
+    let answers = document.querySelectorAll("input[type=radio]:checked");
+    answers.forEach(a=> score += parseInt(a.value));
+
+    let percent = score * 10;
+    let result = percent >= 50 ? "✅ Geçti" : "❌ Kaldı";
+
+    document.getElementById("content").innerHTML = `
+    <h2>🎉 Quiz Sonucu</h2>
+    <p>Doğru Sayısı: ${score} / 10</p>
+    <p>Puan: ${percent} / 100</p>
+    <h3>${result}</h3>
+    <button onclick="location.reload()">Başa Dön</button>
+    `;
+}
+
+</script>
+
+</body>
+</html>
