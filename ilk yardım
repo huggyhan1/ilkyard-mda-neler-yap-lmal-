@@ -3,95 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>İlk Yardım ve Sakatlanmalara Yardım</title>
+<title>İlk Yardım ve Sakatlanmalar</title>
 <style>
-body { font-family: Arial; background:#f5f5f5; margin:0; padding:0; }
-header { background:#007bff; color:white; padding:20px; text-align:center; }
-main { padding:20px; }
-button { margin:5px; padding:8px 15px; font-size:16px; cursor:pointer; }
-.quiz-container { margin-top:20px; border-top:1px solid #ccc; padding-top:20px; }
-.navigation { margin-top:20px; }
+body{font-family:Arial;margin:0;padding:0;background:#f4f4f4;}
+header{background:#2196f3;color:white;padding:12px;text-align:center;}
+.container{padding:15px;}
+button{padding:8px 12px;margin:5px;border:none;border-radius:5px;background:#2196f3;color:white;cursor:pointer;}
+button:disabled{background:#aaa;}
+.page{display:none;}
+.active{display:block;}
+.quiz input{margin-right:6px;}
+.result{font-weight:bold;margin-top:10px;}
 </style>
 </head>
 <body>
+
 <header>
-<h1>İlk Yardım ve Sakatlanmalara Yardım</h1>
-<p>20 bölümlük eğitim + 10 soruluk quiz</p>
+<h2>İlk Yardım ve Sakatlanmalara Yardım</h2>
 </header>
-<main id="content"></main>
+
+<div class="container">
+<div id="pages"></div>
+
+<button id="prev">Önceki</button>
+<button id="next">Sonraki</button>
+</div>
 
 <script>
-// ------------- Veriler -------------
-const pages = [
-"Bölüm 1: Temel İlk Yardım - Olay yerinde güvenlik sağlamak önemlidir.",
-"Bölüm 2: Kırıklar - Kırık bölgeyi sabitleyin ve hareket ettirmeyin.",
-"Bölüm 3: Yanıklar - Yanık bölgeyi soğuk su altında tutun.",
-"Bölüm 4: Kanamalar - Temiz bezle baskı uygulayın.",
-"Bölüm 5: Boğulma - Heimlich manevrası uygulayın.",
-"Bölüm 6: Bayılmalar - Kişiyi yan yatırın ve havayolu açın.",
-"Bölüm 7: Zehirlenmeler - Bilgiye göre müdahale edin ve 112'yi arayın.",
-"Bölüm 8: Kalp Durması - CPR uygulayın ve yardım çağırın.",
-"Bölüm 9: Şok Durumu - Kişiyi sırt üstü yatırın ve sakin olun.",
-"Bölüm 10: Isı Çarpması - Serin bir yere taşıyın ve sıvı verin.",
-"Bölüm 11: Donmalar - Donmuş bölgeyi yavaşça ısıtın.",
-"Bölüm 12: Diş Yaralanmaları - Dişi temiz suda saklayın ve doktora götürün.",
-"Bölüm 13: Göz Yaralanmaları - Gözleri yıkayın ve doktora başvurun.",
-"Bölüm 14: Kulak Yaralanmaları - Temiz pamukla koruyun.",
-"Bölüm 15: Burkulmalar - Buz uygulayın ve sabitleyin.",
-"Bölüm 16: Astım Atakları - Rahat nefes almasını sağlayın ve yardım çağırın.",
-"Bölüm 17: Alerjik Reaksiyonlar - Epinefrin kullanımı gerekebilir.",
-"Bölüm 18: Zehirli Böcek Isırıkları - Temizleyin ve izleyin.",
-"Bölüm 19: Suda Boğulma - Hemen CPR uygulayın ve 112 arayın.",
-"Bölüm 20: Özet - İlk yardım temel adımlarını hatırlayın."
-];
+// ------------------------
+// Sayfalar (20 sayfa örnek)
+const pageContents = [];
+for(let i=1;i<=20;i++){
+  pageContents.push(`Sayfa ${i}: Bu bölümde ilk yardımın temel bilgileri ve sakatlanmalara yardım konusunu anlatıyoruz. İçerik detayları buraya gelecek.`);
+}
 
+// ------------------------
+// Quiz soruları (10 soru örnek)
 const quizQuestions = [
-{question:"İlk yardımın ilk adımı nedir?", options:["Olay yerini güvenli hale getirmek","Hemen müdahale etmek","Panik yapmak"], answer:0},
-{question:"Kırık bir uzvu ne yapmadan hareket ettirmemeliyiz?", options:["Hemen yerine koymak","Sabitlemeden","Üzerine bastırmadan"], answer:1},
-{question:"Yanıkta ilk yapılması gereken?", options:["Soğuk su uygulamak","Yağ sürmek","Sıcak suyla yıkamak"], answer:0},
-{question:"Bayılan bir kişiyi nasıl yatırmalıyız?", options:["Sırt üstü","Yan yatırarak","Oturur şekilde"], answer:1},
-{question:"Boğulma durumunda hangi yöntem uygulanır?", options:["Heimlich manevrası","CPR","Soğuk kompres"], answer:0},
-{question:"Kalp durması durumunda ne yapmalıyız?", options:["Hemen paniklemek","CPR uygulamak","Kişiyi uyandırmak"], answer:1},
-{question:"Isı çarpması durumunda ne yapılır?", options:["Serin yere taşımak","Sıcak su vermek","Güneşte bırakmak"], answer:0},
-{question:"Donma durumunda ne yapılmalı?", options:["Hızlı ısıtmak","Yavaşça ısıtmak","Buz uygulamak"], answer:1},
-{question:"Alerjik reaksiyonda gerekirse ne yapılır?", options:["Epinefrin uygulamak","Panik yapmak","Su vermek"], answer:0},
-{question:"Kanama durumunda ne yapmalıyız?", options:["Baskı uygulamak","Temiz su dökmek","Hemen bandaj yapmak"], answer:0}
+  {q:"Kanama varsa önce ne yapmalıyız?", a:["Basınç uygulamak","Vazgeçmek","Ağrıyı ölçmek"], correct:0},
+  {q:"Kırık bir kolu taşırken ne yapmalıyız?", a:["Sabit tutmak","Hızlı hareket etmek","Çıkarmak"], correct:0},
+  {q:"Bayılan kişiye ne yapılır?", a:["Yere yatırmak","Ayağa kaldırmak","Hiçbir şey yapmamak"], correct:0},
+  {q:"Yanıkta ilk müdahale?", a:["Soğuk su uygulamak","Ateşe tutmak","Krem sürmek"], correct:0},
+  {q:"Boğulma durumunda?", a:["Heimlich uygulamak","Su içirmek","Sallamak"], correct:0},
+  {q:"Şok geçiren kişiye ne yapılır?", a:["Yatırmak ve sakinleştirmek","Hızla hareket ettirmek","Yalnız bırakmak"], correct:0},
+  {q:"Burkulma için ilk yardım?", a:["Buz uygulamak ve sabitlemek","Sıcak kompres","Sallamak"], correct:0},
+  {q:"Elektirik çarpması sonrası?", a:["Güvenliği sağlamak","Hemen dokunmak","Suya sokmak"], correct:0},
+  {q:"Bilinci kapalı kişiye ne yapılır?", a:["Hava yolunu açmak","İçecek vermek","Yürütmek"], correct:0},
+  {q:"Küçük kesikler için?", a:["Temizleyip bandajlamak","Hiçbir şey yapmamak","Sıcak su tutmak"], correct:0}
 ];
 
-// ------------- Başlangıç Değişkeni -------------
 let currentPage = 0;
-const content = document.getElementById('content');
+const pagesDiv = document.getElementById("pages");
 
-// ------------- Sayfa Gösterme Fonksiyonu -------------
-function showPage(pageIndex){
-    content.innerHTML = `<h2>${pages[pageIndex]}</h2>
-    <div class="navigation">
-    ${pageIndex>0?`<button onclick="showPage(${pageIndex-1})">← Önceki</button>`:''}
-    ${pageIndex<pages.length-1?`<button onclick="showPage(${pageIndex+1})">Sonraki →</button>`:''}
-    </div>
-    ${pageIndex===pages.length-1?`<button onclick="showQuiz()">Quizi Başlat</button>`:''}
-    <div id="quiz-container" class="quiz-container"></div>`;
+// ------------------------
+// Sayfaları render et
+function renderPages(){
+  pagesDiv.innerHTML = "";
+  pageContents.forEach((c,i)=>{
+    const div = document.createElement("div");
+    div.className="page";
+    if(i===currentPage) div.classList.add("active");
+    div.innerHTML = `<p>${c}</p>`;
+    // Quiz sayfası
+    if(i===19){ // sayfa 20 quiz
+      div.innerHTML += "<h3>Quiz</h3>";
+      quizQuestions.forEach((q,qi)=>{
+        div.innerHTML += `<div class="quiz">
+          <p>${qi+1}. ${q.q}</p>
+          ${q.a.map((opt,oi)=>`<label><input type="radio" name="q${qi}" value="${oi}">${opt}</label>`).join("")}
+        </div>`;
+      });
+      div.innerHTML += `<button id="submitQuiz">Cevapları Kontrol Et</button>
+                        <div class="result" id="quizResult"></div>`;
+    }
+    pagesDiv.appendChild(div);
+  });
 }
 
-// ------------- Quiz Gösterme Fonksiyonu -------------
-function showQuiz(){
-    const quizContainer=document.getElementById('quiz-container');
-    quizContainer.innerHTML=`<h2>10 Soruluk Quiz</h2>`;
-    quizQuestions.forEach((q,i)=>{
-        const div=document.createElement('div');
-        div.innerHTML=`<p>${i+1}. ${q.question}</p>`;
-        q.options.forEach((opt,index)=>{
-            const btn=document.createElement('button');
-            btn.innerText=opt;
-            btn.onclick=()=>{ alert(index===q.answer?"Doğru!":"Yanlış!"); }
-            div.appendChild(btn);
-        });
-        quizContainer.appendChild(div);
+renderPages();
+
+// ------------------------
+// Button eventleri
+document.getElementById("prev").onclick = ()=>{
+  if(currentPage>0){ currentPage--; updatePages();}
+};
+document.getElementById("next").onclick = ()=>{
+  if(currentPage<pageContents.length-1){ currentPage++; updatePages();}
+};
+
+function updatePages(){
+  const allPages = document.querySelectorAll(".page");
+  allPages.forEach((p,i)=>p.classList.toggle("active", i===currentPage));
+}
+
+// ------------------------
+// Quiz kontrol
+document.addEventListener("click", e=>{
+  if(e.target && e.target.id==="submitQuiz"){
+    let score = 0;
+    quizQuestions.forEach((q,qi)=>{
+      const selected = document.querySelector(`input[name=q${qi}]:checked`);
+      if(selected && parseInt(selected.value)===q.correct) score++;
     });
-}
+    document.getElementById("quizResult").innerText=`Doğru cevap sayısı: ${score} / ${quizQuestions.length}`;
+  }
+});
 
-// ------------- Başlangıç -------------
-showPage(currentPage);
 </script>
+
 </body>
 </html>
+
