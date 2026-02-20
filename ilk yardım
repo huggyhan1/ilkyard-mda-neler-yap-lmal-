@@ -21,8 +21,8 @@ button { margin:5px; padding:8px 15px; font-size:16px; cursor:pointer; }
 <main id="content"></main>
 
 <script>
-const content=document.getElementById('content');
-const pages=[ 
+// ------------- Veriler -------------
+const pages = [
 "Bölüm 1: Temel İlk Yardım - Olay yerinde güvenlik sağlamak önemlidir.",
 "Bölüm 2: Kırıklar - Kırık bölgeyi sabitleyin ve hareket ettirmeyin.",
 "Bölüm 3: Yanıklar - Yanık bölgeyi soğuk su altında tutun.",
@@ -45,7 +45,7 @@ const pages=[
 "Bölüm 20: Özet - İlk yardım temel adımlarını hatırlayın."
 ];
 
-const quizQuestions=[
+const quizQuestions = [
 {question:"İlk yardımın ilk adımı nedir?", options:["Olay yerini güvenli hale getirmek","Hemen müdahale etmek","Panik yapmak"], answer:0},
 {question:"Kırık bir uzvu ne yapmadan hareket ettirmemeliyiz?", options:["Hemen yerine koymak","Sabitlemeden","Üzerine bastırmadan"], answer:1},
 {question:"Yanıkta ilk yapılması gereken?", options:["Soğuk su uygulamak","Yağ sürmek","Sıcak suyla yıkamak"], answer:0},
@@ -58,10 +58,13 @@ const quizQuestions=[
 {question:"Kanama durumunda ne yapmalıyız?", options:["Baskı uygulamak","Temiz su dökmek","Hemen bandaj yapmak"], answer:0}
 ];
 
-let currentPage=0;
+// ------------- Başlangıç Değişkeni -------------
+let currentPage = 0;
+const content = document.getElementById('content');
 
+// ------------- Sayfa Gösterme Fonksiyonu -------------
 function showPage(pageIndex){
-    content.innerHTML=`<h2>${pages[pageIndex]}</h2>
+    content.innerHTML = `<h2>${pages[pageIndex]}</h2>
     <div class="navigation">
     ${pageIndex>0?`<button onclick="showPage(${pageIndex-1})">← Önceki</button>`:''}
     ${pageIndex<pages.length-1?`<button onclick="showPage(${pageIndex+1})">Sonraki →</button>`:''}
@@ -70,6 +73,7 @@ function showPage(pageIndex){
     <div id="quiz-container" class="quiz-container"></div>`;
 }
 
+// ------------- Quiz Gösterme Fonksiyonu -------------
 function showQuiz(){
     const quizContainer=document.getElementById('quiz-container');
     quizContainer.innerHTML=`<h2>10 Soruluk Quiz</h2>`;
@@ -86,7 +90,7 @@ function showQuiz(){
     });
 }
 
-// Başlangıç
+// ------------- Başlangıç -------------
 showPage(currentPage);
 </script>
 </body>
